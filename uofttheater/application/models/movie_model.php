@@ -1,6 +1,7 @@
 <?php
 class Movie_model extends CI_Model {
 
+
 	function get_movies()
 	{
 		$query = $this->db->query("select * from movie");

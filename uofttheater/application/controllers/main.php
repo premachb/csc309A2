@@ -1,7 +1,5 @@
 <?php
-
-
-
+date_default_timezone_set("Canada/Eastern");
 class Main extends CI_Controller {
 
     
@@ -29,8 +27,7 @@ class Main extends CI_Controller {
 		if ($showtimes->num_rows() > 0){
 		
 			//Prepare the array that will contain the data
-			$table = array();	
-	
+			$table = array();
 			$table[] = array('Movie','Theater','Address','Date','Time','Available');
 		
 		   foreach ($showtimes->result() as $row){
@@ -74,6 +71,18 @@ class Main extends CI_Controller {
     	redirect('', 'refresh');
     
     }
-    
+
+    function homepage(){
+        $this->load->model('movie_model', '', TRUE);
+        $this->load->model('theater_model', '', TRUE);
+        $this->load->model('showtime_model', '', TRUE);
+
+        $data['showtimes'] = $this->showtime_model->showUpcomingMovies(5);
+
+        // Load the home page now
+        $data['main'] = 'main/home';
+        $this->load->view('template', $data);
+    }
+
 }
 
