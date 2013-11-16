@@ -18,6 +18,11 @@ class Movie_model extends CI_Model {
 	function delete() {
 		$this->db->query("delete from movie");
 	}
+
+    function getMovieById($movie_id){
+        $query = $this->db->query("select * from movie where movie.id=" . $movie_id);
+        return $query->result();
+    }
 	
 	
 }
