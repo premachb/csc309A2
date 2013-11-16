@@ -41,6 +41,9 @@
 $route['default_controller'] = "main";
 $route['home'] = "main/homepage";
 $route['404_override'] = '';
+$route['admin'] = 'admin/hompage';
+$route['movie/:num'] = 'main/movie';
+$route['newMovie'] = 'admin/addNewMovie';
 
 
 /* End of file routes.php */
