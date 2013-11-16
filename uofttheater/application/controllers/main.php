@@ -78,10 +78,28 @@ class Main extends CI_Controller {
         $this->load->model('showtime_model', '', TRUE);
 
         $data['showtimes'] = $this->showtime_model->showUpcomingMovies(5);
-
+        $data['movies'] = $this->movie_model->get_movies();
         // Load the home page now
         $data['main'] = 'main/home';
+        $data['title'] = "Home - UofT Cinema";
         $this->load->view('template', $data);
+    }
+
+    function movie(){
+        // Find movie showtimes for a movie with id given
+        $this->load->model('movie_model', '', TRUE);
+        $this->load->model('showtime_model', '', TRUE);
+
+        $id = $this->uri->segment(2, 0);
+        // Sanity check the id, someone may tamper
+
+        $movie = $this->movie_model->getMovieById($id);
+        $showtimes = $this->showtime_model->getMovieShowtimes($id);
+        $data['movie'] = $movie;
+        $data['showtimes'] = $showtimes;
+        $data['main'] = 'main/movie';
+        $this->load->view('template', $data);
+
     }
 
 }
