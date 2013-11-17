@@ -77,11 +77,12 @@ class Main extends CI_Controller {
         $this->load->model('theater_model', '', TRUE);
         $this->load->model('showtime_model', '', TRUE);
 
-        $data['showtimes'] = $this->showtime_model->showUpcomingMovies(5);
-        $data['movies'] = $this->movie_model->get_movies();
+
         // Load the home page now
         $data['main'] = 'main/home';
         $data['title'] = "Home - UofT Cinema";
+        $data['movies'] = $this->movie_model->get_movies()->result();
+        $data['theaters'] = $this->theater_model->get_theaters()->result();
         $this->load->view('template', $data);
     }
 
