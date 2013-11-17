@@ -14,8 +14,7 @@
     background-color:#e4deae;
     border:2px solid #efdda8;
  }
- 
- 
+
  input,label {
  	display: block;
  }
@@ -119,6 +118,21 @@
     margin-left:150px;
     width:600px;
     height:auto;
+
+ }
+
+ #homeListings{
+    position: relative;
+ }
+
+ #movieSort{
+     width: 200px;
+     display: inline-block;
+     margin-right: 200px;
+ }
+
+ #theaterSort{
+     display: block;
 
  }
 
