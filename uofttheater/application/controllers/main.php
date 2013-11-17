@@ -116,6 +116,36 @@ class Main extends CI_Controller {
 
     }
 
+    function theater(){
+        $this->load->model('movie_model', '', TRUE);
+        $this->load->model('showtime_model', '', TRUE);
+        $this->load->model('theater_model', '', TRUE);
+
+        $this->load->library('table');
+        $movie_name_array = array();
+        $id = $this->uri->segment(2);
+
+        $theater = $this->theater_model->getTheaterById($id);
+        $movies = $this->movie_model->get_movies()->result();
+        $showtimes = $this->showtime_model->getAvailableTheaterShowtimes($id);
+
+        foreach($movies as $movie){
+            $movie_name_array[$movie->id] = $movie->title;
+        }
+
+        if(!empty($theater)){
+            $data['theater'] = $theater;
+            $data['showtimes'] = $showtimes;
+            $data['movie_name'] = $movie_name_array;
+            $data['main'] = 'main/theater';
+            $data['title'] = "Showtimes for " . $theater[0]->name . "- UofT Cinema";
+            $this->load->view('template', $data);
+        }
+
+
+
+    }
+
     function seating(){
         $this->load->model('movie_model', '', TRUE);
         $this->load->model('showtime_model', '', TRUE);
@@ -151,6 +181,8 @@ class Main extends CI_Controller {
 
         $showtime_id = $this->uri->segment(3);
         $seat_id = $this->uri->segment(4);
+
+
 
     }
 

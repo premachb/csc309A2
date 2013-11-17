@@ -6,6 +6,20 @@
             $query = $this->db->query("select * from ticket");
             return $query;
         }
+
+        function getTicketsByShowtime($showtime_id){
+            $query = $this->db->query('select * from ticket t where t.showtime_id = ' . $showtime_id);
+            return $query;
+        }
+
+        function getSeatsBookedByShowtime($showtime_id){
+            $query = $this->db->query('select t.seat from ticket t where t.showtime_id = ' . $showtime_id);
+            return $query;
+        }
+
+        function addTicket($ticket){
+            $this->db->query('insert into ticket values ()');
+        }
     }
 
 ?>

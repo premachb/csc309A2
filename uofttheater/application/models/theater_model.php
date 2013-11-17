@@ -4,8 +4,8 @@ class Theater_model extends CI_Model {
 	function get_theaters()
 	{
 		$query = $this->db->query("select * from theater");
-		return $query;	
-	}  
+		return $query;
+	}
 
 	function populate() {
 		$this->db->query("insert into theater (name,address) values ('Gallery 1265','1265 Military Trail
@@ -20,6 +20,10 @@ Toronto')");
 	function delete() {
 		$this->db->query("delete from theater");
 	}
-	
+
+    function getTheaterById($theater_id){
+        $query = $this->db->query("select * from theater t where t.id = " . $theater_id);
+        return $query->result();
+    }
 	
 }
