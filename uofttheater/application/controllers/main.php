@@ -89,16 +89,68 @@ class Main extends CI_Controller {
         // Find movie showtimes for a movie with id given
         $this->load->model('movie_model', '', TRUE);
         $this->load->model('showtime_model', '', TRUE);
+        $this->load->model('theater_model', '', TRUE);
 
-        $id = $this->uri->segment(2, 0);
+        $this->load->library('table');
+        $theater_name_array = array();
+        $id = $this->uri->segment(2);
         // Sanity check the id, someone may tamper
 
         $movie = $this->movie_model->getMovieById($id);
-        $showtimes = $this->showtime_model->getMovieShowtimes($id);
-        $data['movie'] = $movie;
-        $data['showtimes'] = $showtimes;
-        $data['main'] = 'main/movie';
-        $this->load->view('template', $data);
+        $showtimes = $this->showtime_model->getAvailableMovieShowtimes($id);
+        $theaters = $this->theater_model->get_theaters()->result();
+
+        // Easy name grabbing by id for the view
+        foreach($theaters as $theatre){
+            $theater_name_array[$theatre->id] = $theatre->name;
+        }
+
+        if(!empty($movie)){
+            $data['movie'] = $movie;
+            $data['showtimes'] = $showtimes;
+            $data['theater_name'] = $theater_name_array;
+            $data['main'] = 'main/movie';
+            $data['title'] = "Showtimes for " . $movie[0]->title . "- UofT Cinema";
+            $this->load->view('template', $data);
+        }
+
+    }
+
+    function seating(){
+        $this->load->model('movie_model', '', TRUE);
+        $this->load->model('showtime_model', '', TRUE);
+        $this->load->model('theater_model', '', TRUE);
+        $this->load->model('ticket_model', '', TRUE);
+
+        $id = $this->uri->segment(3);
+
+        // Get the showtime
+        $showtime = $this->showtime_model->getShowtimeById($id);
+
+        // Check the ticket database to see what seats are reserved
+        $seats_booked = $this->ticket_model->getSeatsBookedByShowtime($id)->result();
+
+        if(!empty($showtime)){
+            $showtime = $showtime[0];
+            $movie = $this->movie_model->getMovieById($showtime->movie_id);
+            $data['title'] = "Current Seating";
+            $data['main'] = 'main/seating';
+            $data['showtime'] = $showtime;
+            $data['movie'] = $movie[0];
+            $data['seats_booked'] = $seats_booked;
+            $this->load->view('template', $data);
+        }
+
+    }
+
+    function booking(){
+        $this->load->model('movie_model', '', TRUE);
+        $this->load->model('showtime_model', '', TRUE);
+        $this->load->model('theater_model', '', TRUE);
+        $this->load->model('ticket_model', '', TRUE);
+
+        $showtime_id = $this->uri->segment(3);
+        $seat_id = $this->uri->segment(4);
 
     }
 
