@@ -114,6 +114,10 @@ class Main extends CI_Controller {
             $data['title'] = "Showtimes for " . $movie[0]->title . "- UofT Cinema";
             $this->load->view('template', $data);
         }
+        else{
+            $data['main'] = '404.php';
+            $this->load->view('template', $data);
+        }
 
     }
 
@@ -140,6 +144,10 @@ class Main extends CI_Controller {
             $data['movie_name'] = $movie_name_array;
             $data['main'] = 'main/theater';
             $data['title'] = "Showtimes for " . $theater[0]->name . "- UofT Cinema";
+            $this->load->view('template', $data);
+        }
+        else{
+            $data['main'] = '404.php';
             $this->load->view('template', $data);
         }
 
@@ -169,6 +177,10 @@ class Main extends CI_Controller {
             $data['showtime'] = $showtime;
             $data['movie'] = $movie[0];
             $data['seats_booked'] = $seats_booked;
+            $this->load->view('template', $data);
+        }
+        else{
+            $data['main'] = '404.php';
             $this->load->view('template', $data);
         }
 
