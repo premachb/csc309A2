@@ -232,50 +232,64 @@ class Main extends CI_Controller {
         $showtime_id = $this->uri->segment(2);
         $seat_id = $this->uri->segment(3);
 
+        // Check if a ticket already exists
+        $this->db->select('ticket')->from('ticket')->where('showtime_id', $showtime_id)->where('seat', $seat_id);
+        $query = $this->db->get();
+        $ticket_full = $query->result();
 
-	     // Load the data for the booking page
-        $data['title'] = "Ticket Booking";
-		$data['showtime_id_pass'] = $showtime_id;
-		$data['seat_pass'] = $seat_id;
-			
-		$this->load->helper(array('form', 'url'));
-		$this->load->helper('date');
+        if(empty($ticket_full)){
+             // Load the data for the booking page
+            $data['title'] = "Ticket Booking";
+            $data['showtime_id_pass'] = $showtime_id;
+            $data['seat_pass'] = $seat_id;
 
-		$this->load->library('form_validation');
-		
-		$this->form_validation->set_rules('firstname', 'First Name', 'required|alpha_dash|xss_clean');
-		$this->form_validation->set_rules('lastname', 'Last Name', 'required|alpha_dash|xss_clean');
-		$this->form_validation->set_rules('creditcardNumber', 'Credit Card Number', 'required|exact_length[16]|numeric');
-		$this->form_validation->set_rules('expireDate', 'Credit Card Expiration Date', 'required|exact_length[4]|numeric|callback_check_date');
-		
-		if ($this->form_validation->run() == FALSE)
-		{
-			$this->load->view('form', $data);
-		}
-		else
-		{
-			$data = array(
-			   'first' => $_POST['firstname'] ,
-			   'last' =>  $_POST['lastname'] ,
-			   'creditcardnumber' => $_POST['creditcardNumber'],
-			   'creditcardexpiration' => $_POST['expireDate'],
-			   'showtime_id' => intval($_POST['showtime_id']),
-			   'seat' => intval($_POST['seat'])
-			);
-			
-			$this->db->insert('ticket', $data);
+            $this->load->helper(array('form', 'url'));
+            $this->load->helper('date');
 
-            // Gotta get the id for the ticket so gotta get the object back.
-            $this->db->select('ticket')->from('ticket')->where('showtime_id', intval($_POST['showtime_id']))->where('seat', intval($_POST['seat']));
-            $query = $this->db->get();
-            $ticket_full = $query->result();
-			$ticket_id = $ticket_full[0]->ticket;
+            $this->load->library('form_validation');
 
-            // We then need to update the amount available on the showtime
-            $this->db->update('showtime', array('available' => 'available - 1'), array('id' => $showtime_id));
+            $this->form_validation->set_rules('firstname', 'First Name', 'required|alpha_dash|xss_clean');
+            $this->form_validation->set_rules('lastname', 'Last Name', 'required|alpha_dash|xss_clean');
+            $this->form_validation->set_rules('creditcardNumber', 'Credit Card Number', 'required|exact_length[16]|numeric');
+            $this->form_validation->set_rules('expireDate', 'Credit Card Expiration Date', 'required|exact_length[4]|numeric|callback_check_date');
 
-            redirect('/print/' . $ticket_id );
-		}
+            if ($this->form_validation->run() == FALSE)
+            {
+                $this->load->view('form', $data);
+            }
+            else
+            {
+                $data = array(
+                   'first' => $_POST['firstname'] ,
+                   'last' =>  $_POST['lastname'] ,
+                   'creditcardnumber' => $_POST['creditcardNumber'],
+                   'creditcardexpiration' => $_POST['expireDate'],
+                   'showtime_id' => intval($_POST['showtime_id']),
+                   'seat' => intval($_POST['seat'])
+                );
+
+                $this->db->insert('ticket', $data);
+
+                // Gotta get the id for the ticket so gotta get the object back.
+                $this->db->select('ticket')->from('ticket')->where('showtime_id', intval($_POST['showtime_id']))->where('seat', intval($_POST['seat']));
+                $query = $this->db->get();
+                $ticket_full = $query->result();
+                $ticket_id = $ticket_full[0]->ticket;
+
+                // We then need to update the amount available on the showtime
+                $this->db->query("UPDATE showtime SET available = available - 1 WHERE id= " . $showtime_id . ' AND available >= 0');
+
+
+
+                redirect('/print/' . $ticket_id );
+            }
+        }
+        // else a ticket already exists for this
+        else{
+            $data['main'] = 'main/ticket_exists';
+            $data['title'] = 'Sorry, ticket exists';
+            $this->load->view('template', $data);
+        }
         
     }
 
