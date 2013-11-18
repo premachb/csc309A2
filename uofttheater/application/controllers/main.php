@@ -216,20 +216,26 @@ class Main extends CI_Controller {
     }
 
     function booking(){
-    
+    	
+		$this->load->model('ticket_model', '', TRUE);
+		
+		$tickets =$this->ticket_model->get_tickets()->result();
+		
         $showtime_id = $this->uri->segment(3);
         $seat_id = $this->uri->segment(4);
 
 	     // Load the data for the booking page
         $data['title'] = "Ticket Booking";
+		$data['showtime_id_pass'] = $showtime_id;
+		$data['seat_pass'] = $seat_id;
 			
 		$this->load->helper(array('form', 'url'));
 		$this->load->helper('date');
 
 		$this->load->library('form_validation');
 		
-		$this->form_validation->set_rules('firstname', 'First Name', 'required|xss_clean');
-		$this->form_validation->set_rules('lastname', 'Last Name', 'required|xss_clean');
+		$this->form_validation->set_rules('firstname', 'First Name', 'required|alpha_dash|xss_clean');
+		$this->form_validation->set_rules('lastname', 'Last Name', 'required|alpha_dash|xss_clean');
 		$this->form_validation->set_rules('creditcardNumber', 'Credit Card Number', 'required|exact_length[16]|numeric');
 		$this->form_validation->set_rules('expireDate', 'Credit Card Expiration Date', 'required|exact_length[4]|numeric|callback_check_date');
 		
@@ -239,7 +245,17 @@ class Main extends CI_Controller {
 		}
 		else
 		{
-			redirect('main/print_ticket');
+			$data = array(
+			   'first' => $_POST['firstname'] ,
+			   'last' =>  $_POST['lastname'] ,
+			   'creditcardnumber' => $_POST['creditcardNumber'],
+			   'creditcardexpiration' => $_POST['expireDate'],
+			   'showtime_id' => intval($_POST['showtime_id']),
+			   'seat' => intval($_POST['seat'])
+			);
+			
+			$this->db->insert('ticket', $data); 
+						
 		}
         
     } 

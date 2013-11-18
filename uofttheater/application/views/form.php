@@ -27,7 +27,10 @@ base_url = '<?= base_url();?>';
   <div id="main">
 	<?php echo validation_errors(); ?>
 	
-	<?php echo form_open('main/booking', array('id' => 'validationForm')); ?>
+	<?php $attributes = array('firstname' => 'firstname', 'lastname' => 'lastname', 'creditcardNumber' => 'creditcardNumber', 
+	'expireDate' => 'expireDate', 'showtime_id' => 'showtime_id', 'seat' => 'seat')?>
+	
+	<?php echo form_open('main/booking', $attributes, array('id' => 'validationForm')); ?>
 	
 	<h5>First Name</h5>
 	<input type="text" name="firstname" value="<?php echo set_value('firstname'); ?>" required size="50" />
@@ -40,6 +43,10 @@ base_url = '<?= base_url();?>';
 	
 	<h5>Credit Card Expiration Date</h5>
 	<input type="text" id="expiredate" name="expireDate" value="<?php echo set_value('expireDate'); ?>" required size="4" />
+	
+	<input type="hidden" name="showtime_id" value="<?php echo $showtime_id_pass; ?>" />
+	
+	<input type="hidden" name="seat" value="<?php echo $seat_pass; ?>" />
 	
 	<div><input type="submit" value="Submit" /></div>
 	

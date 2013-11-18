@@ -78,7 +78,7 @@
                 $table[] = array($row->ticket,$row->first,$row->last,$row->creditcardnumber,$row->creditcardexpiration,$row->showtime_id,$row->seat);
            }
             //Next step is to place our created array into a new array variable, one that we are sending to the view.
-            $data['salestable'] = $table;           
+            $data['showtimes'] = $table;           
         }
         
         //Now we are prepared to call the view, passing all the necessary variables inside the $data array

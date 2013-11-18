@@ -18,7 +18,9 @@
         }
 
         function addTicket($ticket){
-            $this->db->query('insert into ticket values ()');
+        	
+			$this->db->insert('ticket', $ticket);
+       
         }
     }
 

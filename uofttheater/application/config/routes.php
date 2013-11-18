@@ -41,7 +41,7 @@
 $route['default_controller'] = "main/homepage";
 $route['home'] = "main/homepage";
 $route['404_override'] = '';
-$route['admin'] = 'admin/hompage';
+$route['admin'] = 'admin/index';
 $route['movie/:num'] = 'main/movie';
 $route['newMovie'] = 'admin/addNewMovie';
 $route['seating/:num'] = 'main/seating';
