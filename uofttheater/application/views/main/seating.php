@@ -12,10 +12,10 @@
         <?php
             for($i = 1; $i <= 3; $i++){
                 if(!in_array($i, $seats_booked)){
-                    echo "<p> Seat " . $i . " " . anchor('main/booking/' . $showtime->id . '/' . $i, 'Book Now');
+                    echo "<p> Seat " . $i . " : " . anchor('main/booking/' . $showtime->id . '/' . $i, 'Book Now');
                 }
                 else{
-                    echo "<p> Seat " . $i . " Seat Booked";
+                    echo "<p> Seat " . $i . " : Seat Booked";
                 }
             }
         ?>
