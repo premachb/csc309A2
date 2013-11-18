@@ -228,7 +228,7 @@ class Main extends CI_Controller {
         $this->load->model('showtime_model', '', TRUE);
 		
 		$tickets =$this->ticket_model->get_tickets()->result();
-		
+
         $showtime_id = $this->uri->segment(3);
         $seat_id = $this->uri->segment(4);
 
@@ -265,9 +265,9 @@ class Main extends CI_Controller {
 			
 			$this->db->insert('ticket', $data);
 
+            // Gotta get the id for the ticket so gotta get the object back.
             $this->db->select('ticket')->from('ticket')->where('showtime_id', intval($_POST['showtime_id']))->where('seat', intval($_POST['seat']));
             $query = $this->db->get();
-
             $ticket_id = $query->result()[0]->ticket;
 
             // We then need to update the amount available on the showtime
