@@ -20,7 +20,7 @@
     <?php
         $this->table->set_heading(array('Movie', 'Date', 'Time', 'Seats Available', ''));
         foreach($showtimes->result() as $showtime){
-            $this->table->add_row(array($movie_name[$showtime->movie_id], $showtime->date, $showtime->time, $showtime->available,  anchor('main/seating/' . $showtime->id, 'Check Seating')));
+            $this->table->add_row(array($movie_name[$showtime->movie_id], $showtime->date, $showtime->time, $showtime->available,  anchor('seating/' . $showtime->id, 'Check Seating')));
         }
         echo $this->table->generate();
     ?>

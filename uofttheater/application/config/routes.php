@@ -39,14 +39,15 @@
 */
 
 $route['default_controller'] = "main/homepage";
-$route['home'] = "main/homepage";
+$route['homepage'] = "main/homepage";
 $route['404_override'] = '';
-$route['admin'] = 'admin/index';
+$route['admin.php']='admin/index';
 $route['movie/:num'] = 'main/movie';
 $route['newMovie'] = 'admin/addNewMovie';
 $route['seating/:num'] = 'main/seating';
-$route['booking/:num'] = 'main/booking';
+$route['booking/:num/:num'] = 'main/booking';
 $route['theater/:num'] = 'main/theater';
+$route['print/:num'] = 'main/confirmation';
 
 
 /* End of file routes.php */

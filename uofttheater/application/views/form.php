@@ -27,10 +27,10 @@ base_url = '<?= base_url();?>';
   <div id="main">
 	<?php echo validation_errors(); ?>
 	
-	<?php $attributes = array('firstname' => 'firstname', 'lastname' => 'lastname', 'creditcardNumber' => 'creditcardNumber', 
+	<?php $attributes = array('firstname' => 'firstname', 'lastname' => 'lastname', 'creditcardNumber' => 'creditcardNumber',
 	'expireDate' => 'expireDate', 'showtime_id' => 'showtime_id', 'seat' => 'seat')?>
 	
-	<?php echo form_open('main/booking', $attributes, array('id' => 'validationForm')); ?>
+	<?php echo form_open('main/booking/' . $showtime_id_pass . '/' . $seat_pass, $attributes, array('id' => 'validationForm')) ?>
 	
 	<h5>First Name</h5>
 	<input type="text" name="firstname" value="<?php echo set_value('firstname'); ?>" required size="50" />

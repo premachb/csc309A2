@@ -18,7 +18,7 @@
         }
 
         function getTicketById($ticket_id){
-            $query = $this->db->query('select * from ticket t where t.id = ' . $ticket_id);
+            $query = $this->db->query('select * from ticket t where t.ticket = ' . $ticket_id);
             return $query->result();
         }
 
@@ -27,6 +27,7 @@
 			$this->db->insert('ticket', $ticket);
        
             $this->db->query('insert into ticket values (');
+
         }
     }
 

@@ -21,7 +21,7 @@
         <?php
             $this->table->set_heading(array('Theater', 'Date', 'Time', 'Seats Available', ''));
             foreach($showtimes->result() as $showtime){
-                $this->table->add_row(array($theater_name[$showtime->theater_id], $showtime->date, $showtime->time, $showtime->available,  anchor('main/seating/' . $showtime->id, 'Check Seating')));
+                $this->table->add_row(array($theater_name[$showtime->theater_id], $showtime->date, $showtime->time, $showtime->available,  anchor('seating/' . $showtime->id, 'Check Seating')));
             }
             echo $this->table->generate();
         ?>
