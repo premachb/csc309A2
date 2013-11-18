@@ -5,7 +5,7 @@ Alan Yuan, c1yuanal, 999011242
 Enter the home page through index.php
 Enter the admin page through admin.php
 
-I've added an .htaccess file that should work on the CDF apache enviornment the prof gave us, its the basic rewriting rules that are on the Codeigniter URL rewriting tutorial. http://ellislab.com/codeigniter/user-guide/general/urls.html
+I've added an .htaccess file that should work on the CDF apache enviornment the prof gave us, its the basic rewriting rules that are on the Codeigniter URL rewriting tutorial. http://ellislab.com/codeigniter/user-guide/general/urls.html. By default the links append index.php, but with this rewrite you can get to the pages without it. 
 
 When you reach the homepage you'll see a list of movies and theaters, you choose either and you reach a listing of showtimes filtered by either the theater you picked. Once you click Check Seating on one of shows, you will be taken to a page that will let you pick seats depending on whether or not they were booked already. (We didn't get the JS seat stuff completely done, but you can still select a seat but clicking on Book Now beside one of the seats if it is available).
 
