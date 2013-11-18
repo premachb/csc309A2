@@ -195,8 +195,27 @@ class Main extends CI_Controller {
         $showtime_id = $this->uri->segment(3);
         $seat_id = $this->uri->segment(4);
 
+	     // Load the data for the booking page
+        $data['title'] = "Ticket Booking";
+			
+		$this->load->helper(array('form', 'url'));
 
+		$this->load->library('form_validation');
+		
+		$this->form_validation->set_rules('firstname', 'First Name', 'required|xss_clean');
+		$this->form_validation->set_rules('lastname', 'Last Name', 'required|xss_clean');
+		$this->form_validation->set_rules('creditcardNumber', 'Credit Card Number', 'required|min_length[16]');
+		$this->form_validation->set_rules('expireDate', 'Credit Card Expiration Date', 'required|min_length[4]');
 
+		if ($this->form_validation->run() == FALSE)
+		{
+			$this->load->view('form');
+		}
+		else
+		{
+			$this->load->view('home');
+		}
+        
     }
 
 }

@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title><?php echo $title; ?></title>
+<link href="<?php echo base_url();?>css/default.css" rel="stylesheet" type="text/css" />
+<noscript>
+Javascript is not enabled! Please turn on Javascript to use this site.
+</noscript>
+
+<script type="text/javascript">
+//<![CDATA[
+base_url = '<?= base_url();?>';
+//]]>
+</script>
+<script type="text/javascript" src="<?php echo base_url();?>js/prototype.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>js/scriptaculous.js" ></script>
+<script type="text/javascript" src="<?php echo base_url();?>js/customtools.js" ></script>
+</head>
+<body>
+<div id="wrapper">
+  <div id="header">
+  <?php $this->load->view('header');?>
+  </div>
+
+  <div id="main">
+	<?php echo validation_errors(); ?>
+	
+	<?php echo form_open('main/booking'); ?>
+	
+	<h5>First Name</h5>
+	<input type="text" name="firstname" value="<?php echo set_value('firstname'); ?>" size="50" />
+	
+	<h5>Last Name</h5>
+	<input type="text" name="lastname" value="<?php echo set_value('lastname'); ?>" size="50" />
+	
+	<h5>Credit Card Number</h5>
+	<input type="text" name="creditcardNumber" value="<?php echo set_value('creditcardNumber'); ?>" size="16" />
+	
+	<h5>Credit Card Expiration Date</h5>
+	<input type="text" name="expireDate" value="<?php echo set_value('expireDate'); ?>" size="4" />
+	
+	<div><input type="submit" value="Submit" /></div>
+	
+	</form>
+  </div>
+  
+  <div id="footer"> 
+  <?php $this->load->view('footer');?>
+  </div>
+</div>
+</body>
+</html>
