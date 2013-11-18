@@ -100,21 +100,6 @@ class Main extends CI_Controller {
         $movie = $this->movie_model->getMovieById($id);
         $theaters = $this->theater_model->get_theaters()->result();
 
-        // User has chosen a specific date
-        if(isset($_GET['date_selected']) && $_GET['date_selected'] != '0'){
-            $showtimes = $this->showtime_model->getAvailableMovieShowtimesByDate($id, $_GET['date_selected']);
-            $data['header'] = "Showtimes for " . $movie[0]->title . " on " . $_GET['date_selected'] . " - UofT Cinema";
-        }
-        else{
-            $showtimes = $this->showtime_model->getAvailableMovieShowtimes($id);
-            $data['header'] = "Showtimes for " . $movie[0]->title . "- UofT Cinema";
-
-        }
-
-        $movie = $this->movie_model->getMovieById($id);
-
-        $theaters = $this->theater_model->get_theaters()->result();
-
         // Easy name grabbing by id for the view
         foreach($theaters as $theatre){
             $theater_name_array[$theatre->id] = $theatre->name;
@@ -125,6 +110,17 @@ class Main extends CI_Controller {
 
 
         if(!empty($movie)){
+            // User has chosen a specific date
+            if(isset($_GET['date_selected']) && $_GET['date_selected'] != '0'){
+                $showtimes = $this->showtime_model->getAvailableMovieShowtimesByDate($id, $_GET['date_selected']);
+                $data['header'] = "Showtimes for " . $movie[0]->title . " on " . $_GET['date_selected'] . " - UofT Cinema";
+            }
+            else{
+                $showtimes = $this->showtime_model->getAvailableMovieShowtimes($id);
+                $data['header'] = "Showtimes for " . $movie[0]->title . "- UofT Cinema";
+
+            }
+
             $data['movie'] = $movie;
             $data['showtimes'] = $showtimes;
             $data['theater_name'] = $theater_name_array;
