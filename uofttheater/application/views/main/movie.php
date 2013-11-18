@@ -3,8 +3,8 @@
 
     </head>
     <body>
-        <h2>Showtimes for
-            <?php echo $movie[0]->title; ?>
+        <h2>
+            <?php echo $header; ?>
         </h2>
         <p>Select a date: </p>
         <form method='GET' action='<?php echo base_url()?>/index.php/movie/<?php echo $movie[0]->id?>'>

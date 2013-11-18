@@ -4,9 +4,7 @@
     </head>
 
     <body>
-    <h2>Showtimes for
-        <?php echo $theater[0]->name; ?>
-    </h2>
+    <h2><?php echo $header ?></h2>
     <p>Select a date: </p>
     <form method='GET' action='<?php echo base_url()?>/index.php/theater/<?php echo $theater[0]->id?>'>
         <select name='date_selected' id='date_selector' onchange="if(this.value != -1){this.form.submit()}">

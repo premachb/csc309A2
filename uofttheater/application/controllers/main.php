@@ -97,12 +97,18 @@ class Main extends CI_Controller {
         $id = $this->uri->segment(2);
         // Sanity check the id, someone may tamper
 
+        $movie = $this->movie_model->getMovieById($id);
+        $theaters = $this->theater_model->get_theaters()->result();
+
         // User has chosen a specific date
         if(isset($_GET['date_selected']) && $_GET['date_selected'] != '0'){
             $showtimes = $this->showtime_model->getAvailableMovieShowtimesByDate($id, $_GET['date_selected']);
+            $data['header'] = "Showtimes for " . $movie[0]->title . " on " . $_GET['date_selected'] . " - UofT Cinema";
         }
         else{
             $showtimes = $this->showtime_model->getAvailableMovieShowtimes($id);
+            $data['header'] = "Showtimes for " . $movie[0]->title . "- UofT Cinema";
+
         }
 
         $movie = $this->movie_model->getMovieById($id);
@@ -142,15 +148,18 @@ class Main extends CI_Controller {
         $movie_name_array = array();
         $id = $this->uri->segment(2);
 
+        $theater = $this->theater_model->getTheaterById($id);
+        $movies = $this->movie_model->get_movies()->result();
+
+
         if(isset($_GET['date_selected']) && $_GET['date_selected'] != '0'){
             $showtimes = $this->showtime_model->getAvailableTheaterShowtimesByDate($id, $_GET['date_selected']);
+            $data['header'] = "Showtimes for " . $theater[0]->name . " on " . $_GET['date_selected'] . " - UofT Cinema";
         }
         else{
             $showtimes = $this->showtime_model->getAvailableTheaterShowtimes($id);
+            $data['header'] = "Showtimes for " . $theater[0]->name . "- UofT Cinema";
         }
-
-        $theater = $this->theater_model->getTheaterById($id);
-        $movies = $this->movie_model->get_movies()->result();
 
         foreach($movies as $movie){
             $movie_name_array[$movie->id] = $movie->title;
@@ -165,15 +174,13 @@ class Main extends CI_Controller {
             $data['showtimes'] = $showtimes;
             $data['movie_name'] = $movie_name_array;
             $data['main'] = 'main/theater';
-            $data['title'] = "Showtimes for " . $theater[0]->name . "- UofT Cinema";
+            $data['title'] = 'Showtimes for ' . $theater[0]->name . "- UofT Cinema";
             $this->load->view('template', $data);
         }
         else{
             $data['main'] = '404.php';
             $this->load->view('template', $data);
         }
-
-
 
     }
 
