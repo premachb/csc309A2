@@ -14,6 +14,9 @@
                 if(!in_array($i, $seats_booked)){
                     echo "<p> Seat " . $i . " " . anchor('main/booking/' . $showtime->id . '/' . $i, 'Book Now');
                 }
+                else{
+                    echo "<p> Seat " . $i . " Seat Booked";
+                }
             }
         ?>
         <div id='container'>
