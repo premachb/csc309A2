@@ -7,6 +7,7 @@
     padding:0;
  }
 
+
  #wrapper{
     width:800px;
     margin:10px auto;
@@ -244,4 +245,8 @@ img.thumbnail{
 	width:70%;
 	font-size:.8em;
 	margin-bottom:30px;
+}
+
+canvas{
+    background-color: white;
 }

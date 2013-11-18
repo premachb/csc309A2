@@ -97,14 +97,26 @@ class Main extends CI_Controller {
         $id = $this->uri->segment(2);
         // Sanity check the id, someone may tamper
 
+        // User has chosen a specific date
+        if(isset($_GET['date_selected']) && $_GET['date_selected'] != '0'){
+            $showtimes = $this->showtime_model->getAvailableMovieShowtimesByDate($id, $_GET['date_selected']);
+        }
+        else{
+            $showtimes = $this->showtime_model->getAvailableMovieShowtimes($id);
+        }
+
         $movie = $this->movie_model->getMovieById($id);
-        $showtimes = $this->showtime_model->getAvailableMovieShowtimes($id);
+
         $theaters = $this->theater_model->get_theaters()->result();
 
         // Easy name grabbing by id for the view
         foreach($theaters as $theatre){
             $theater_name_array[$theatre->id] = $theatre->name;
         }
+
+        $date_query = $this->db->query('select distinct date from showtime');
+        $data['dates'] = $date_query->result();
+
 
         if(!empty($movie)){
             $data['movie'] = $movie;
@@ -130,13 +142,23 @@ class Main extends CI_Controller {
         $movie_name_array = array();
         $id = $this->uri->segment(2);
 
+        if(isset($_GET['date_selected']) && $_GET['date_selected'] != '0'){
+            $showtimes = $this->showtime_model->getAvailableTheaterShowtimesByDate($id, $_GET['date_selected']);
+        }
+        else{
+            $showtimes = $this->showtime_model->getAvailableTheaterShowtimes($id);
+        }
+
         $theater = $this->theater_model->getTheaterById($id);
         $movies = $this->movie_model->get_movies()->result();
-        $showtimes = $this->showtime_model->getAvailableTheaterShowtimes($id);
 
         foreach($movies as $movie){
             $movie_name_array[$movie->id] = $movie->title;
         }
+
+        $date_query = $this->db->query('select distinct date from showtime');
+        $data['dates'] = $date_query->result();
+
 
         if(!empty($theater)){
             $data['theater'] = $theater;

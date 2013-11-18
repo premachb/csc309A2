@@ -1,17 +1,9 @@
-<?php
-/**
- * Created by JetBrains PhpStorm.
- * User: brien
- * Date: 11/16/2013
- * Time: 8:24 PM
- * To change this template use File | Settings | File Templates.
- */
-?>
 
-<html>
+<html xmlns="http://www.w3.org/1999/html">
     <head>
+        <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.7.4.min.js"></script>
-
+        <script type="text/javascript" src="<?php echo base_url(); ?>js/seating.js"></script>
     </head>
     <body>
         <h1>Seating Chart for <?php echo $movie->title ?> - Pick a seat</h1>
@@ -23,7 +15,11 @@
                 }
             }
         ?>
+        <div id='container'>
+            <script>
 
+            </script>
+        </div>
     </body>
 </html>
 
