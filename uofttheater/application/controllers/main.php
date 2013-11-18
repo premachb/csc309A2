@@ -201,10 +201,12 @@ class Main extends CI_Controller {
         if(!empty($showtime)){
             $showtime = $showtime[0];
             $movie = $this->movie_model->getMovieById($showtime->movie_id);
+            $theater = $this->theater_model->getTheaterById($showtime->theater_id);
             $data['title'] = "Current Seating";
             $data['main'] = 'main/seating';
             $data['showtime'] = $showtime;
             $data['movie'] = $movie[0];
+            $data['theater'] = $theater[0];
             $data['seats_booked'] = $seats_booked;
             $this->load->view('template', $data);
         }

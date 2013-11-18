@@ -7,6 +7,7 @@
     </head>
     <body>
         <h1>Seating Chart for <?php echo $movie->title ?> on <?php echo $showtime->date?> at <?php echo $showtime->time ?></h1>
+        <h3>Theatre: <?php echo $theater->name; ?></h3>
         <h3>Seats available - <?php echo $showtime->available ?></h3>
         <?php
             for($i = 1; $i <= 3; $i++){

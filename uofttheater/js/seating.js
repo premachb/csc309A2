@@ -26,7 +26,7 @@ $(document).ready(function(){
         fill: 'green',
         stroke: 'black',
         strokeWidth: 4
-    })
+    });
 
     var seat_3 = new Kinetic.Rect({
         x: 200,
@@ -36,29 +36,45 @@ $(document).ready(function(){
         fill: 'green',
         stroke: 'black',
         strokeWidth: 4
-    })
-
-
-    seat_1.on('click', function(){
-        var seatsTaken = $.get("", function(data){
-
-        });
-        if(seat_1.getFill() == 'green'){
-            seat_1.setFill('yellow');
-            layer.draw();
-        }
-        else{
-            seat_1.setFill('green');
-            layer.draw();
-        }
     });
+
+    var text_1 = new Kinetic.Text({
+        x: 120,
+        y: 105,
+        text: "Seat 1",
+        fontSize: 10,
+        fontFamily: 'Calibri',
+        fill: 'blue'
+    });
+
+    var text_2 = new Kinetic.Text({
+        x: 150,
+        y: 105,
+        text: "Seat 2",
+        fontSize: 10,
+        fontFamily: 'Calibri',
+        fill: 'blue'
+    });
+
+    var text_3 = new Kinetic.Text({
+        x: 200,
+        y: 105,
+        text: "Seat 3",
+        fontSize: 10,
+        fontFamily: 'Calibri',
+        fill: 'blue'
+    });
+
+
 
 
     // add the shape to the layer
     layer.add(seat_1);
     layer.add(seat_2);
     layer.add(seat_3);
-
+    layer.add(text_1);
+    layer.add(text_2);
+    layer.add(text_3);
 
     // add the layer to the stage
     stage.add(layer);
