@@ -1,6 +1,7 @@
 <html>
     <h1>Your order has been placed, here is a confirmation: </h1>
 
+    <h5>Name: <?php echo $ticket[0]->first . ' ' . $ticket[0]->last?></h5>
     <h5>Movie : <?php echo $movie->title; ?></h5>
     <h5>Theater : <?php echo $theater->name; ?></h5>
     <h5>Date: <?php echo $showtime->date; ?></h5>
