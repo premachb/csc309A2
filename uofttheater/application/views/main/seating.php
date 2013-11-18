@@ -13,9 +13,13 @@
             for($i = 1; $i <= 3; $i++){
                 if(!in_array($i, $seats_booked)){
                     echo "<p> Seat " . $i . " : " . anchor('booking/' . $showtime->id . '/' . $i, 'Book Now');
+					
+					echo "<input type='hidden' id ='" . $i .  "' value='clear' >";
                 }
                 else{
                     echo "<p> Seat " . $i . " : Seat Booked";
+					
+					echo "<input type='hidden' id ='" . $i .  "' value='booked' >";
                 }
             }
         ?>
