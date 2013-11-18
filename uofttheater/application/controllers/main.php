@@ -95,7 +95,7 @@ class Main extends CI_Controller {
         $this->load->library('table');
         $theater_name_array = array();
         $id = $this->uri->segment(2);
-        // Sanity check the id, someone may tamper
+
 
         $movie = $this->movie_model->getMovieById($id);
         $theaters = $this->theater_model->get_theaters()->result();
@@ -105,10 +105,11 @@ class Main extends CI_Controller {
             $theater_name_array[$theatre->id] = $theatre->name;
         }
 
+        // Get date range for date selector
         $date_query = $this->db->query('select distinct date from showtime');
         $data['dates'] = $date_query->result();
 
-
+        // Check if this movie is actually in our db
         if(!empty($movie)){
             // User has chosen a specific date
             if(isset($_GET['date_selected']) && $_GET['date_selected'] != '0'){
@@ -128,6 +129,7 @@ class Main extends CI_Controller {
             $data['title'] = "Showtimes for " . $movie[0]->title . "- UofT Cinema";
             $this->load->view('template', $data);
         }
+        // If the id doesn't return an object, send a 404
         else{
             $data['main'] = '404.php';
             $this->load->view('template', $data);
@@ -147,16 +149,7 @@ class Main extends CI_Controller {
         $theater = $this->theater_model->getTheaterById($id);
         $movies = $this->movie_model->get_movies()->result();
 
-
-        if(isset($_GET['date_selected']) && $_GET['date_selected'] != '0'){
-            $showtimes = $this->showtime_model->getAvailableTheaterShowtimesByDate($id, $_GET['date_selected']);
-            $data['header'] = "Showtimes for " . $theater[0]->name . " on " . $_GET['date_selected'] . " - UofT Cinema";
-        }
-        else{
-            $showtimes = $this->showtime_model->getAvailableTheaterShowtimes($id);
-            $data['header'] = "Showtimes for " . $theater[0]->name . "- UofT Cinema";
-        }
-
+        // Store a id -> name value pair for easy access in view
         foreach($movies as $movie){
             $movie_name_array[$movie->id] = $movie->title;
         }
@@ -164,8 +157,17 @@ class Main extends CI_Controller {
         $date_query = $this->db->query('select distinct date from showtime');
         $data['dates'] = $date_query->result();
 
-
+        // Check if the theater id supplied was real
         if(!empty($theater)){
+            // Check if we have a date selected
+            if(isset($_GET['date_selected']) && $_GET['date_selected'] != '0'){
+                $showtimes = $this->showtime_model->getAvailableTheaterShowtimesByDate($id, $_GET['date_selected']);
+                $data['header'] = "Showtimes for " . $theater[0]->name . " on " . $_GET['date_selected'] . " - UofT Cinema";
+            }
+            else{
+                $showtimes = $this->showtime_model->getAvailableTheaterShowtimes($id);
+                $data['header'] = "Showtimes for " . $theater[0]->name . "- UofT Cinema";
+            }
             $data['theater'] = $theater;
             $data['showtimes'] = $showtimes;
             $data['movie_name'] = $movie_name_array;
@@ -173,6 +175,7 @@ class Main extends CI_Controller {
             $data['title'] = 'Showtimes for ' . $theater[0]->name . "- UofT Cinema";
             $this->load->view('template', $data);
         }
+        // If its not return a 404
         else{
             $data['main'] = '404.php';
             $this->load->view('template', $data);
@@ -199,6 +202,7 @@ class Main extends CI_Controller {
             $seats_booked_array[] = $seat->seat;
         }
 
+        // Check if the showtime given is real
         if(!empty($showtime)){
             $showtime = $showtime[0];
             $movie = $this->movie_model->getMovieById($showtime->movie_id);
@@ -211,6 +215,7 @@ class Main extends CI_Controller {
             $data['seats_booked'] = $seats_booked_array;
             $this->load->view('template', $data);
         }
+        // If its not 404
         else{
             $data['main'] = '404.php';
             $this->load->view('template', $data);
@@ -233,6 +238,7 @@ class Main extends CI_Controller {
         $query = $this->db->get();
         $ticket_full = $query->result();
 
+        // If someone already booked this ticket (the only way we could've reached this page is if someone manually entered this URL)
         if(empty($ticket_full)){
              // Load the data for the booking page
             $data['title'] = "Ticket Booking";
@@ -244,6 +250,7 @@ class Main extends CI_Controller {
 
             $this->load->library('form_validation');
 
+            // Set the form rules
             $this->form_validation->set_rules('firstname', 'First Name', 'required|alpha_dash|xss_clean');
             $this->form_validation->set_rules('lastname', 'Last Name', 'required|alpha_dash|xss_clean');
             $this->form_validation->set_rules('creditcardNumber', 'Credit Card Number', 'required|exact_length[16]|numeric');
@@ -280,7 +287,7 @@ class Main extends CI_Controller {
                 redirect('/print/' . $ticket_id );
             }
         }
-        // else a ticket already exists for this
+        // Someone entered a URL for a ticket that was already booked, give them the option to pick seats for that showtime again
         else{
             $data['main'] = 'main/ticket_exists';
             $data['title'] = 'Sorry, ticket exists';
@@ -296,8 +303,9 @@ class Main extends CI_Controller {
         $this->load->model('movie_model', '', TRUE);
         $this->load->model('showtime_model', '', TRUE);
 
-
+        // Grab the ticket object for this booking
         $ticket = $this->ticket_model->getTicketById($id);
+
 
         if(!empty($ticket)){
             $showtime = $this->showtime_model->getShowtimeById($ticket[0]->showtime_id);
@@ -305,7 +313,8 @@ class Main extends CI_Controller {
 			
 			$movie_full = $this->movie_model->getMovieById($showtime[0]->movie_id);
 			$theatre_full = $this->theater_model->getTheaterById($showtime[0]->theater_id);
-			
+
+            // Fill data to show on confirmation page
             $data['movie'] = $movie_full[0];
             $data['theater'] = $theatre_full[0];
             $data['showtime'] = $showtime[0];
@@ -313,6 +322,7 @@ class Main extends CI_Controller {
             $data['main'] = 'main/print';
             $this->load->view('template', $data);
         }
+        // No ticket exists with this id
         else{
             $data['main'] = '404.php';
             $this->load->view('template', $data);
