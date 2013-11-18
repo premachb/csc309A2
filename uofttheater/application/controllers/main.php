@@ -268,7 +268,8 @@ class Main extends CI_Controller {
             // Gotta get the id for the ticket so gotta get the object back.
             $this->db->select('ticket')->from('ticket')->where('showtime_id', intval($_POST['showtime_id']))->where('seat', intval($_POST['seat']));
             $query = $this->db->get();
-            $ticket_id = $query->result()[0]->ticket;
+            $ticket_full = $query->result();
+			$ticket_id = $ticket_full[0]->ticket;
 
             // We then need to update the amount available on the showtime
             $this->db->update('showtime', array('available' => 'available - 1'), array('id' => $showtime_id));
@@ -291,8 +292,12 @@ class Main extends CI_Controller {
         if(!empty($ticket)){
             $showtime = $this->showtime_model->getShowtimeById($ticket[0]->showtime_id);
             $data['ticket'] = $ticket;
-            $data['movie'] = $this->movie_model->getMovieById($showtime[0]->movie_id)[0];
-            $data['theater'] =  $this->theater_model->getTheaterById($showtime[0]->theater_id)[0];
+			
+			$movie_full = $this->movie_model->getMovieById($showtime[0]->movie_id);
+			$theatre_full = $this->theater_model->getTheaterById($showtime[0]->theater_id);
+			
+            $data['movie'] = $movie_full[0];
+            $data['theater'] = $theatre_full[0];
             $data['showtime'] = $showtime[0];
             $data['title'] = 'Ticket Confirmation';
             $data['main'] = 'main/print';
