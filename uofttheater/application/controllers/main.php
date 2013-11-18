@@ -225,11 +225,13 @@ class Main extends CI_Controller {
     function booking(){
     	
 		$this->load->model('ticket_model', '', TRUE);
+        $this->load->model('showtime_model', '', TRUE);
 		
 		$tickets =$this->ticket_model->get_tickets()->result();
 		
         $showtime_id = $this->uri->segment(3);
         $seat_id = $this->uri->segment(4);
+
 
 	     // Load the data for the booking page
         $data['title'] = "Ticket Booking";
@@ -261,13 +263,51 @@ class Main extends CI_Controller {
 			   'seat' => intval($_POST['seat'])
 			);
 			
-			$this->db->insert('ticket', $data); 
-						
+			$this->db->insert('ticket', $data);
+
+            $this->db->select('ticket')->from('ticket')->where('showtime_id', intval($_POST['showtime_id']))->where('seat', intval($_POST['seat']));
+            $query = $this->db->get();
+
+            $ticket_id = $query->result()[0]->ticket;
+
+            // We then need to update the amount available on the showtime
+            $this->db->update('showtime', array('available' => 'available - 1'), array('id' => $showtime_id));
+
+            redirect('/print/' . $ticket_id );
 		}
         
-    } 
-	
-	public function check_date($str){
+    }
+
+    function confirmation(){
+        $id = $this->uri->segment(2);
+        $this->load->model('ticket_model', '', TRUE);
+        $this->load->model('theater_model', '', TRUE);
+        $this->load->model('movie_model', '', TRUE);
+        $this->load->model('showtime_model', '', TRUE);
+
+
+        $ticket = $this->ticket_model->getTicketById($id);
+
+        if(!empty($ticket)){
+            $showtime = $this->showtime_model->getShowtimeById($ticket[0]->showtime_id);
+            $data['ticket'] = $ticket;
+            $data['movie'] = $this->movie_model->getMovieById($showtime[0]->movie_id)[0];
+            $data['theater'] =  $this->theater_model->getTheaterById($showtime[0]->theater_id)[0];
+            $data['showtime'] = $showtime[0];
+            $data['title'] = 'Ticket Confirmation';
+            $data['main'] = 'main/print';
+            $this->load->view('template', $data);
+        }
+        else{
+            $data['main'] = '404.php';
+            $this->load->view('template', $data);
+        }
+
+    }
+
+
+
+    public function check_date($str){
 		//we will assume it is already in numbers
 	if (intval(substr($str, 2, 2)) < intval(date('y'))) {
 			$this->form_validation->set_message('check_date', 'The %s credit card has expired');

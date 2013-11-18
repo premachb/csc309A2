@@ -47,6 +47,7 @@ $route['newMovie'] = 'admin/addNewMovie';
 $route['seating/:num'] = 'main/seating';
 $route['booking/:num'] = 'main/booking';
 $route['theater/:num'] = 'main/theater';
+$route['print/:num'] = 'main/confirmation';
 
 
 /* End of file routes.php */
