@@ -27,24 +27,78 @@ base_url = '<?= base_url();?>';
   <div id="main">
 	<?php echo validation_errors(); ?>
 	
-	<?php echo form_open('main/booking'); ?>
+	<?php echo form_open('main/booking', array('id' => 'validationForm')); ?>
 	
 	<h5>First Name</h5>
-	<input type="text" name="firstname" value="<?php echo set_value('firstname'); ?>" size="50" />
+	<input type="text" name="firstname" value="<?php echo set_value('firstname'); ?>" required size="50" />
 	
 	<h5>Last Name</h5>
-	<input type="text" name="lastname" value="<?php echo set_value('lastname'); ?>" size="50" />
+	<input type="text" name="lastname" value="<?php echo set_value('lastname'); ?>" required size="50" />
 	
 	<h5>Credit Card Number</h5>
-	<input type="text" name="creditcardNumber" value="<?php echo set_value('creditcardNumber'); ?>" size="16" />
+	<input type="text" id="creditcard" name="creditcardNumber" value="<?php echo set_value('creditcardNumber'); ?>" required size="16" />
 	
 	<h5>Credit Card Expiration Date</h5>
-	<input type="text" name="expireDate" value="<?php echo set_value('expireDate'); ?>" size="4" />
+	<input type="text" id="expiredate" name="expireDate" value="<?php echo set_value('expireDate'); ?>" required size="4" />
 	
 	<div><input type="submit" value="Submit" /></div>
 	
 	</form>
   </div>
+
+    <script>
+    var creditcardNumber = document.getElementById('creditcard');
+    var expireDate = document.getElementById('expiredate');
+    
+    var checkcreditCardValidity = function() {
+    	creditcardNumber = document.getElementById('creditcard');
+    	
+        if ((creditcardNumber.value).length != 16) {
+            creditcardNumber.setCustomValidity('The Credit Card Number Length needs to be 16');
+        } else {
+            creditcardNumber.setCustomValidity('');
+        }        
+    };
+    
+    var checkexpireDateValidity = function() {
+    	expireDate = document.getElementById('expiredate');
+    	
+        if ((expireDate.value).length != 4) {
+            expireDate.setCustomValidity('The expire date length needs to be 4');
+        } else {
+            expireDate.setCustomValidity('');
+        }        
+    };
+    
+    creditcardNumber.addEventListener('change', checkcreditCardValidity, false);
+    expireDate.addEventListener('change', checkexpireDateValidity, false);
+
+
+
+   var form = document.getElementById('validationForm');
+    form.addEventListener('submit', function() {
+        checkexpireDateValidity();
+        
+        if (!this.checkValidity()) {
+            event.preventDefault();
+            //Implement you own means of displaying error messages to the user here.
+            creditcardNumber.focus();
+        }
+
+    }, false);
+    
+   var form2 = document.getElementById('validationForm');
+    form2.addEventListener('submit', function() {
+	    checkcreditCardValidity();
+	    
+	    if (!this.checkValidity()) {
+	       event.preventDefault();
+	       //Implement you own means of displaying error messages to the user here.
+	       creditcardNumber.focus();
+	    }
+    
+    }, false);
+   </script>
   
   <div id="footer"> 
   <?php $this->load->view('footer');?>

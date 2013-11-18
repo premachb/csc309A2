@@ -187,11 +187,7 @@ class Main extends CI_Controller {
     }
 
     function booking(){
-        $this->load->model('movie_model', '', TRUE);
-        $this->load->model('showtime_model', '', TRUE);
-        $this->load->model('theater_model', '', TRUE);
-        $this->load->model('ticket_model', '', TRUE);
-
+    
         $showtime_id = $this->uri->segment(3);
         $seat_id = $this->uri->segment(4);
 
@@ -199,24 +195,46 @@ class Main extends CI_Controller {
         $data['title'] = "Ticket Booking";
 			
 		$this->load->helper(array('form', 'url'));
+		$this->load->helper('date');
 
 		$this->load->library('form_validation');
 		
 		$this->form_validation->set_rules('firstname', 'First Name', 'required|xss_clean');
 		$this->form_validation->set_rules('lastname', 'Last Name', 'required|xss_clean');
-		$this->form_validation->set_rules('creditcardNumber', 'Credit Card Number', 'required|min_length[16]');
-		$this->form_validation->set_rules('expireDate', 'Credit Card Expiration Date', 'required|min_length[4]');
-
+		$this->form_validation->set_rules('creditcardNumber', 'Credit Card Number', 'required|exact_length[16]|numeric');
+		$this->form_validation->set_rules('expireDate', 'Credit Card Expiration Date', 'required|exact_length[4]|numeric|callback_check_date');
+		
 		if ($this->form_validation->run() == FALSE)
 		{
-			$this->load->view('form');
+			$this->load->view('form', $data);
 		}
 		else
 		{
-			$this->load->view('home');
+			redirect('main/print_ticket');
 		}
         
-    }
+    } 
+	
+	public function check_date($str){
+		//we will assume it is already in numbers
+	if (intval(substr($str, 2, 2)) < intval(date('y'))) {
+			$this->form_validation->set_message('check_date', 'The %s credit card has expired');
+			return FALSE;
+		}
+	elseif((intval(substr($str, 2, 2)) == intval(date('y'))) && (intval(substr($str, 0, 2)) < intval(date('m'))) ){
+		$this->form_validation->set_message('check_date', 'The %s credit card has expired');
+		return FALSE;
+	}
+
+	elseif(intval(substr($str, 0, 2)) > 12){
+		$this->form_validation->set_message('check_date', 'The %s month is invalid');
+		return FALSE;
+	}
+	
+	else{
+			return TRUE;
+	}
+	}
 
 }
 
