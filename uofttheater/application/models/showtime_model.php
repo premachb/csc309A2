@@ -49,8 +49,22 @@ class Showtime_model extends CI_Model {
         return $query;
     }
 
+    function getAvailableMovieShowtimesByDate($movie_id, $date, $order_by = 's.theater_id'){
+        $this->db->where('movie_id', $movie_id);
+        $this->db->where('date', $date);
+        $query = $this->db->get('showtime');
+        return $query;
+    }
+
     function getAvailableTheaterShowtimes($theater_id, $order_by = 's.movie_id'){
         $query = $this->db->query('select distinct s.id, s.movie_id, s.date, s.time, s.available from showtime s where s.theater_id = ' . $theater_id . ' order by ' . $order_by . ', s.date');
+        return $query;
+    }
+
+    function getAvailableTheaterShowtimesByDate($theater_id, $date, $order_by = 's.theater_id'){
+        $this->db->where('theater_id', $theater_id);
+        $this->db->where('date', $date);
+        $query = $this->db->get('showtime');
         return $query;
     }
 

@@ -4,9 +4,19 @@
     </head>
 
     <body>
-    <h2>Showtimes for
-        <?php echo $theater[0]->name; ?>
-    </h2>
+    <h2><?php echo $header ?></h2>
+    <p>Select a date: </p>
+    <form method='GET' action='<?php echo base_url()?>/index.php/theater/<?php echo $theater[0]->id?>'>
+        <select name='date_selected' id='date_selector' onchange="if(this.value != -1){this.form.submit()}">
+            <option value='-1'>Select a value</option>
+            <option value='0'>Show All</option>
+            <?php
+            foreach($dates as $date){
+                echo '<option value=' . $date->date . '>' . $date->date . "</option>";
+            }
+            ?>
+        </select>
+    </form>
     <?php
         $this->table->set_heading(array('Movie', 'Date', 'Time', 'Seats Available', ''));
         foreach($showtimes->result() as $showtime){
