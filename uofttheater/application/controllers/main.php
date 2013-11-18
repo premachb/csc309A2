@@ -196,16 +196,23 @@ class Main extends CI_Controller {
         $showtime = $this->showtime_model->getShowtimeById($id);
 
         // Check the ticket database to see what seats are reserved
-        $seats_booked = $this->ticket_model->getSeatsBookedByShowtime($id)->result();
+        $seats_booked_query = $this->ticket_model->getSeatsBookedByShowtime($id)->result();
+        $seats_booked_array = array();
+
+        foreach($seats_booked_query as $seat){
+            $seats_booked_array[] = $seat->seat;
+        }
 
         if(!empty($showtime)){
             $showtime = $showtime[0];
             $movie = $this->movie_model->getMovieById($showtime->movie_id);
+            $theater = $this->theater_model->getTheaterById($showtime->theater_id);
             $data['title'] = "Current Seating";
             $data['main'] = 'main/seating';
             $data['showtime'] = $showtime;
             $data['movie'] = $movie[0];
-            $data['seats_booked'] = $seats_booked;
+            $data['theater'] = $theater[0];
+            $data['seats_booked'] = $seats_booked_array;
             $this->load->view('template', $data);
         }
         else{
