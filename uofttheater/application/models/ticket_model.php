@@ -23,13 +23,10 @@
         }
 
         function addTicket($ticket){
-<<<<<<< HEAD
-        	
+
 			$this->db->insert('ticket', $ticket);
        
-=======
             $this->db->query('insert into ticket values (');
->>>>>>> 7de8e7f5880d4c8576027b4f6ba04ef64d8a9577
         }
     }
 
