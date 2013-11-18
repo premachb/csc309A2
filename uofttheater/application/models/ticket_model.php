@@ -18,7 +18,7 @@
         }
 
         function getTicketById($ticket_id){
-            $query = $this->db->query('select t.seat from ticket t where t.id = ' . $ticket_id);
+            $query = $this->db->query('select * from ticket t where t.id = ' . $ticket_id);
             return $query->result();
         }
 
