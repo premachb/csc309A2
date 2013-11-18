@@ -9,7 +9,7 @@
     function index() {
             $data['title'] = "Administrator Page";
             $data['main'] = 'admin/index';
-            $this->load->view('admin/template', $data);
+            $this->load->view('template', $data);
     }
     
     function showShowtimes()

@@ -190,7 +190,7 @@ class Main extends CI_Controller {
         $this->load->model('theater_model', '', TRUE);
         $this->load->model('ticket_model', '', TRUE);
 
-        $id = $this->uri->segment(3);
+        $id = $this->uri->segment(2);
 
         // Get the showtime
         $showtime = $this->showtime_model->getShowtimeById($id);
@@ -229,8 +229,8 @@ class Main extends CI_Controller {
 		
 		$tickets =$this->ticket_model->get_tickets()->result();
 
-        $showtime_id = $this->uri->segment(3);
-        $seat_id = $this->uri->segment(4);
+        $showtime_id = $this->uri->segment(2);
+        $seat_id = $this->uri->segment(3);
 
 
 	     // Load the data for the booking page
